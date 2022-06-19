@@ -98,7 +98,7 @@ export const useApi = (): UseAxiosApi<ApiList, UseApiOptions> => {
 
 ### `api/index.ts`
 
-```typescript jsx
+```typescript
 import { getTranslation } from '@/api/getTranslation';
 
 export type ApiList = typeof api;
@@ -112,7 +112,7 @@ export const api = {
 
 ### `api/getTranslation.ts`
 
-```typescript jsx
+```typescript
 import { requestApi } from '@/api/requestApi';
 import { AxiosApiRequest } from '@drpiou/axios';
 
@@ -131,6 +131,30 @@ export const getTranslation: AxiosApiRequest<
     method: 'GET',
     params: data,
   });
+};
+```
+
+### `api/requestApi.ts`
+
+```typescript
+import { AxiosConfig, AxiosOptions, AxiosRequest, prepareAxios } from '@drpiou/axios';
+
+export const requestApi = <CD = unknown, SD = unknown, ED = unknown>(
+  config?: AxiosConfig<CD>,
+  options?: AxiosOptions<SD, ED>,
+): AxiosRequest<SD, ED, CD> => {
+  return prepareAxios<SD, ED, CD>(
+    {
+      baseURL: 'https://api.domain.com',
+      ...config,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        ...config?.headers,
+      },
+    },
+    options,
+  );
 };
 ```
 
